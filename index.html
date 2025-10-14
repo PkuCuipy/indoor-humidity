@@ -9,65 +9,79 @@
   </head>
 
   <body class="bg-gray-100 min-h-screen p-8">
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-5xl mx-auto">
 
-      <!-- Sliders -->
-      <div class="grid grid-cols-2 gap-6 mb-8">
+      <div class="grid grid-cols-2 gap-8">
 
-        <!-- Outdoor Temperature -->
-        <div>
-          <div class="bg-white rounded-lg p-6 shadow-md">
-            <label class="block text-sm font-medium mb-2">Outdoor Temp</label>
+        <!-- OUTDOOR SECTION -->
+        <div class="bg-green-50 rounded-lg p-6 shadow-sm border border-blue-100">
+          <h2 class="text-xl font-semibold mb-6 text-gray-700">🏖 Outdoor</h2>
+
+          <!-- Outdoor Temperature -->
+          <div class="mb-8 bg-white/60 rounded-lg p-4 border border-gray-200">
+            <label class="block text-sm font-medium mb-2 text-gray-600">Temperature</label>
             <div class="text-3xl font-bold mb-4 text-center" id="outdoorTempValue">15.0°C</div>
-            <input type="range" id="outdoorTemp" min="-20" max="40" value="15" step="0.5"
-              class="w-full h-4 rounded-full appearance-none cursor-pointer"
-              style="background: linear-gradient(to right, #3b82f6, #f97316);">
-          </div>
-        </div>
-
-        <!-- Outdoor Humidity -->
-        <div>
-          <div class="bg-white rounded-lg p-6 shadow-md">
-            <label class="block text-sm font-medium mb-2">Outdoor Humidity</label>
-            <div class="text-3xl font-bold mb-4 text-center" id="outdoorHumidityValue">50%</div>
-            <input type="range" id="outdoorHumidity" min="0" max="100" value="50" step="1"
-              class="w-full h-4 rounded-lg appearance-none cursor-pointer"
-              style="background: linear-gradient(to right, #bfdbfe, #1e40af);">
-          </div>
-        </div>
-
-        <!-- Indoor Temperature -->
-        <div>
-          <div class="bg-white rounded-lg p-6 shadow-md">
-            <label class="block text-sm font-medium mb-2">Indoor Temp</label>
-            <div class="text-3xl font-bold mb-4 text-center" id="indoorTempValue">20.0°C</div>
-            <input type="range" id="indoorTemp" min="10" max="30" value="20" step="0.5"
-              class="w-full h-4 rounded-lg appearance-none cursor-pointer"
-              style="background: linear-gradient(to right, #3b82f6, #f97316);">
-          </div>
-        </div>
-
-        <!-- Indoor Humidity (Output) -->
-        <div>
-          <div class="bg-white rounded-lg p-6 shadow-md border-2 border-purple-500">
-            <label class="block text-sm font-medium mb-2">Indoor Humidity</label>
-            <div class="text-3xl font-bold mb-4 text-center text-purple-700" id="indoorHumidityValue">--
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">❄️</span>
+              <input type="range" id="outdoorTemp" min="-20" max="40" value="15" step="0.5"
+                class="flex-1 h-3 rounded-full appearance-none cursor-pointer"
+                style="background: linear-gradient(to right, #3b82f6, #f97316);">
+              <span class="text-2xl">🔥</span>
             </div>
-            <div class="w-full h-4 rounded-lg" id="indoorHumidityBar"
+          </div>
+
+          <!-- Outdoor Humidity -->
+          <div class="bg-white/60 rounded-lg p-4 border border-gray-200">
+            <label class="block text-sm font-medium mb-2 text-gray-600">Humidity</label>
+            <div class="text-3xl font-bold mb-4 text-center" id="outdoorHumidityValue">50%</div>
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">💧</span>
+              <input type="range" id="outdoorHumidity" min="0" max="100" value="50" step="1"
+                class="flex-1 h-3 rounded-lg appearance-none cursor-pointer"
+                style="background: linear-gradient(to right, #bfdbfe, #1e40af);">
+              <span class="text-2xl">💦</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- INDOOR SECTION -->
+        <div class="bg-amber-50 rounded-lg p-6 shadow-sm border border-amber-100">
+          <h2 class="text-xl font-semibold mb-6 text-gray-700">🏠 Indoor</h2>
+
+          <!-- Indoor Temperature -->
+          <div class="mb-8 bg-white/60 rounded-lg p-4 border border-gray-200">
+            <label class="block text-sm font-medium mb-2 text-gray-600">Temperature</label>
+            <div class="text-3xl font-bold mb-4 text-center" id="indoorTempValue">20.0°C</div>
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">❄️</span>
+              <input type="range" id="indoorTemp" min="10" max="30" value="20" step="0.5"
+                class="flex-1 h-3 rounded-lg appearance-none cursor-pointer"
+                style="background: linear-gradient(to right, #3b82f6, #f97316);">
+              <span class="text-2xl">🔥</span>
+            </div>
+          </div>
+
+          <!-- Indoor Humidity (Output) -->
+          <div class="bg-purple-100/70 rounded-lg p-4 border border-purple-200">
+            <label class="block text-sm font-medium mb-2 text-gray-600">Humidity (Calculated)</label>
+            <div class="text-3xl font-bold mb-4 text-center text-purple-700" id="indoorHumidityValue">--</div>
+            <div class="w-full h-3 rounded-lg" id="indoorHumidityBar"
               style="background: linear-gradient(to right, #bfdbfe, #1e40af);"></div>
           </div>
         </div>
+
       </div>
 
-      <!-- Fill Location Button -->
-      <div class="bg-white rounded-lg p-6 shadow-md">
-        <button id="fillLocation" class="w-full py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700">
-          Fill from Current Location
-        </button>
+      <!-- Status Messages -->
+      <div id="status" class="mt-6 bg-white rounded-lg p-4 shadow-sm border border-gray-200 space-y-1 text-sm hidden">
+        <!-- Status messages will appear here -->
+      </div>
 
-        <div id="status" class="mt-4 space-y-2 text-sm hidden">
-          <!-- Status messages will appear here -->
-        </div>
+      <!-- Refresh Button -->
+      <div class="mt-4 text-center">
+        <button id="refreshLocation" class="px-4 py-2 text-sm bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+          🔄 Refresh Location Data
+        </button>
       </div>
 
     </div>
@@ -126,8 +140,8 @@
         calculateIndoorHumidity();
       });
 
-      // Fill from location
-      document.getElementById('fillLocation').addEventListener('click', async () => {
+      // Auto-fetch location on page load
+      async function autoFillLocation() {
         const statusDiv = document.getElementById('status');
         statusDiv.innerHTML = '';
         statusDiv.classList.remove('hidden');
@@ -156,7 +170,6 @@
 
           addStatus('Fetching weather data...', 'loading');
           const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m&timezone=auto`;
-          // addStatus(`API URL: ${apiUrl}`, 'loading');
 
           try {
             const response = await fetch(apiUrl);
@@ -184,10 +197,18 @@
         }, (error) => {
           addStatus('Location error: ' + error.message, 'error');
         });
-      });
+      }
 
       // Initial calculation
       calculateIndoorHumidity();
+
+      // Auto-fetch location when page loads
+      autoFillLocation();
+
+      // Refresh button event listener
+      document.getElementById('refreshLocation').addEventListener('click', () => {
+        autoFillLocation();
+      });
     </script>
 
     <style>
