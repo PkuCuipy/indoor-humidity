@@ -65,25 +65,29 @@
           <div class="bg-purple-100/70 rounded-lg p-4 border border-purple-200">
             <label class="block text-sm font-medium mb-2 text-gray-600">Humidity (Calculated)</label>
             <div class="text-3xl font-bold mb-4 text-center text-purple-700" id="indoorHumidityValue">--</div>
-            <div class="w-full h-3 rounded-lg" id="indoorHumidityBar"
-              style="background: linear-gradient(to right, #bfdbfe, #1e40af);"></div>
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">💧</span>
+              <input type="range" id="indoorHumidityDisplay" min="0" max="100" value="0" step="1"
+                class="flex-1 h-3 rounded-lg appearance-none pointer-events-none"
+                style="background: linear-gradient(to right, #bfdbfe, #1e40af);">
+              <span class="text-2xl">💦</span>
+            </div>
           </div>
         </div>
 
       </div>
 
-      <!-- Status Messages -->
-      <div id="status" class="mt-6 bg-white rounded-lg p-4 shadow-sm border border-gray-200 space-y-1 text-sm hidden">
-        <!-- Status messages will appear here -->
-      </div>
-
       <!-- Refresh Button -->
-      <div class="mt-4 text-center">
-        <button id="refreshLocation" class="px-4 py-2 text-sm bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
-          🔄 Refresh Location Data
+      <div class="mt-4">
+        <button id="refreshLocation" class="px-2 py-1 text-sm bg-gray-200 text-black/70 rounded-lg hover:bg-gray-300 transition-colors border border-gray-300">
+          🔄 Refill Location Data
         </button>
       </div>
 
+      <!-- Status Messages -->
+      <div id="status" class="mt-3 bg-white rounded-lg p-4 shadow-sm border border-gray-200 space-y-1 text-sm hidden">
+        <!-- Status messages will appear here -->
+      </div>
     </div>
 
     <script>
@@ -95,12 +99,19 @@
       const outdoorHumidityValue = document.getElementById('outdoorHumidityValue');
       const indoorTempValue = document.getElementById('indoorTempValue');
       const indoorHumidityValue = document.getElementById('indoorHumidityValue');
-      const indoorHumidityBar = document.getElementById('indoorHumidityBar');
+      const indoorHumidityDisplay = document.getElementById('indoorHumidityDisplay');
 
       function calculateIndoorHumidity() {
         const outTemp = parseFloat(outdoorTempSlider.value);
         const outHum = parseFloat(outdoorHumiditySlider.value);
         const inTemp = parseFloat(indoorTempSlider.value);
+
+        // Handle edge case: if outdoor humidity is 0, indoor humidity is also 0
+        if (outHum <= 0) {
+          indoorHumidityValue.textContent = '0%';
+          indoorHumidityDisplay.value = 0;
+          return;
+        }
 
         // Magnus formula for dew point
         const a = 17.27;
@@ -115,14 +126,8 @@
 
         indoorHumidityValue.textContent = Math.round(indoorRH) + '%';
 
-        // Update color intensity
-        const intensity = indoorRH / 100;
-        const lightBlue = [191, 219, 254]; // #bfdbfe
-        const darkBlue = [30, 64, 175];    // #1e40af
-        const r = Math.round(lightBlue[0] + (darkBlue[0] - lightBlue[0]) * intensity);
-        const g = Math.round(lightBlue[1] + (darkBlue[1] - lightBlue[1]) * intensity);
-        const bl = Math.round(lightBlue[2] + (darkBlue[2] - lightBlue[2]) * intensity);
-        indoorHumidityBar.style.background = `rgb(${r}, ${g}, ${bl})`;
+        // Update the display slider position
+        indoorHumidityDisplay.value = Math.round(indoorRH);
       }
 
       outdoorTempSlider.addEventListener('input', () => {
@@ -230,6 +235,28 @@
         background: white;
         cursor: pointer;
         border: 3px solid #6366f1;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Indoor humidity display slider - same style but purple */
+      #indoorHumidityDisplay::-webkit-slider-thumb {
+        appearance: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: white;
+        cursor: default;
+        border: 3px solid #7c3aed;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      #indoorHumidityDisplay::-moz-range-thumb {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: white;
+        cursor: default;
+        border: 3px solid #7c3aed;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       }
     </style>
