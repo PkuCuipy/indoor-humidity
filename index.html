@@ -9,7 +9,7 @@
   </head>
 
   <body class="bg-gray-100 min-h-screen p-8">
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-3xl mx-auto">
 
       <!-- Sliders -->
       <div class="grid grid-cols-2 gap-6 mb-8">
@@ -65,7 +65,9 @@
           Fill from Current Location
         </button>
 
-        <div id="status" class="mt-4 space-y-2 text-sm"></div>
+        <div id="status" class="mt-4 space-y-2 text-sm hidden">
+          <!-- Status messages will appear here -->
+        </div>
       </div>
 
     </div>
@@ -128,6 +130,7 @@
       document.getElementById('fillLocation').addEventListener('click', async () => {
         const statusDiv = document.getElementById('status');
         statusDiv.innerHTML = '';
+        statusDiv.classList.remove('hidden');
 
         function addStatus(message, status) {
           const div = document.createElement('div');
@@ -153,7 +156,7 @@
 
           addStatus('Fetching weather data...', 'loading');
           const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m&timezone=auto`;
-          addStatus(`API URL: ${apiUrl}`, 'loading');
+          // addStatus(`API URL: ${apiUrl}`, 'loading');
 
           try {
             const response = await fetch(apiUrl);
@@ -163,8 +166,6 @@
             }
 
             const data = await response.json();
-            addStatus('Weather data retrieved', 'success');
-            addStatus(`Raw data: ${JSON.stringify(data.current)}`, 'success');
             addStatus(`Timezone: ${data.timezone}`, 'success');
             addStatus(`Temperature: ${data.current.temperature_2m}°C`, 'success');
             addStatus(`Humidity: ${data.current.relative_humidity_2m}%`, 'success');
